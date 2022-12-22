@@ -1,10 +1,10 @@
 import express from "express";
 import "express-async-errors";
+import userRouter from "./router/users";
 
 const app = express();
+app.use("/users", userRouter);
 
-app.get("/planets", (request, response) => {
-    response.json([{ name: "Mercury" }, { name: "Venus" }]);
-});
+
 
 export default app;
