@@ -5,6 +5,4 @@ import userRouter from "./router/users";
 const app = express();
 app.use("/users", userRouter);
 
-
-
 export default app;
