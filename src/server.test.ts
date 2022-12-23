@@ -11,7 +11,7 @@ describe("Test Server", () => {
             .expect(200)
             .expect("Content-Type", /application\/json/);
 
-        expect(response.body).toEqual(userJson)
+        expect(response.body).toEqual(userJson);
     });
 
     test("GET /users/1", async () => {
@@ -20,6 +20,6 @@ describe("Test Server", () => {
             .expect(200)
             .expect("Content-Type", /application\/json/);
 
-        expect(response.body).toEqual(userJson[0])
+        expect(response.body).toEqual(userJson[0]);
     });
 });
