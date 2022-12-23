@@ -1,6 +1,8 @@
 import express from "express";
+import "express-async-errors";
 import usersJson from "../profile.json";
 import fs from 'fs/promises';
+import { createHmac } from 'node:crypto';
 
 type ObjectServer = {
     id: string;
@@ -11,12 +13,22 @@ type ObjectServer = {
 
 
 
-async function example(content : ObjectServer[]) {
+async function writeJson(content: ObjectServer[]) {
     try {
         await fs.writeFile('./src/profile.json', JSON.stringify(content));
     } catch (err) {
         console.log(err);
     }
+}
+
+function hash(secret: string) : string{
+
+    const secretWord = secret;
+    const hash = createHmac('sha256', secretWord)
+        .update('Quanto è stato difficile farlo')
+        .digest('hex');
+    console.log(hash);
+    return hash;
 }
 
 
@@ -48,9 +60,7 @@ router.get("/login", (req, res) => {
     const { username, password } = req.query;
 
     const user: ObjectServer | undefined = arrayList.find(
-        (item: ObjectServer) =>
-            item.username === username && item.password === password
-    );
+        (item: ObjectServer) => item.username === username && item.password === hash(String(password)));
 
     if (!user) {
         res.status(401).json({
@@ -65,12 +75,12 @@ router.get("/login", (req, res) => {
 router.post("/signin", (req, res) => {
     const { email, username, password } = req.query;
 
+
     if (
         usersJson.some(
             (item: ObjectServer) =>
                 item.email === email &&
-                item.username === username &&
-                item.password === password
+                item.username === username
         )
     ) {
         res.status(200).json({
@@ -84,11 +94,11 @@ router.post("/signin", (req, res) => {
         id: String(arrayList.length + 1) as string,
         username: username as string,
         email: email as string,
-        password: password as string,
+        password: hash(String(password)) as string,
     });
 
 
-    example(arrayList);
+    writeJson(arrayList);
 
     res.status(200).json(arrayList);
 });
