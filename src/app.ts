@@ -5,4 +5,8 @@ import userRouter from "./router/users";
 const app = express();
 app.use("/users", userRouter);
 
+app.get("/", (req,res)=>{
+    res.send("<h1>Homepage</h1><a href='/users'>Users</a>")
+})
+
 export default app;
