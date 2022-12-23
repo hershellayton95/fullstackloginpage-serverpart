@@ -1,5 +1,4 @@
 import express from "express";
-import { send } from "process";
 import usersJson from "../profile.json"
 
 const router = express.Router();
@@ -22,7 +21,7 @@ router.get("/search", (req, res) => {
     const user = usersJson.find(item=> item.username === username && item.password === password);
 
     if(!user) res.status(401).json({success: false, note: "username o password sono errate"})
-    
+
     res.status(200).json(user)
 });
 
