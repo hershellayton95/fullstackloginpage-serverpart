@@ -73,7 +73,10 @@ router.post("/signin", (req, res) => {
                 item.password === password
         )
     ) {
-        res.status(200).send("user already exists");
+        res.status(200).json({
+            success: false,
+            note: "utente già registrato",
+        });
         return;
     }
 
