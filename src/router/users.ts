@@ -21,13 +21,12 @@ async function writeJson(content: ObjectServer[]) {
     }
 }
 
-function hash(secret: string) : string{
+function hash(secret: string): string {
 
     const secretWord = secret;
     const hash = createHmac('sha256', secretWord)
         .update('Quanto è stato difficile farlo')
         .digest('hex');
-    console.log(hash);
     return hash;
 }
 
@@ -69,7 +68,7 @@ router.get("/login", (req, res) => {
         });
         return;
     }
-    res.status(200).json(user);
+    res.status(200).json({ success: true, message: "you've logged" });
 });
 
 router.post("/signin", (req, res) => {
@@ -79,13 +78,13 @@ router.post("/signin", (req, res) => {
     if (
         usersJson.some(
             (item: ObjectServer) =>
-                item.email === email &&
+                item.email === email ||
                 item.username === username
         )
     ) {
         res.status(200).json({
             success: false,
-            note: "utente già registrato",
+            note: "email or username already used",
         });
         return;
     }
@@ -100,7 +99,43 @@ router.post("/signin", (req, res) => {
 
     writeJson(arrayList);
 
-    res.status(200).json(arrayList);
+    res.status(200).json({ success: true, message: "user added" });
 });
+
+router.put("/user/:id", (req, res) => {
+    const { id } = req.params;
+    const {password, ...user} = req.body;
+
+
+
+    if (arrayList.some(item => item.id === id)) {
+        const index = arrayList.findIndex(item => item.id === id);
+        arrayList[index] = { ...arrayList[index], ...user, password: hash(String(password))};
+    } else {
+        res.status(200).json({ success: "false", message: "user doesn't exist" });
+        return;
+    }
+
+    writeJson(arrayList);
+
+    res.status(200).json({ success: true, message: "user has been modified" });
+})
+
+router.delete("/user/:id", (req, res) => {
+    const { id } = req.params;
+
+    if (arrayList.some(item => item.id === id)) {
+        const index = arrayList.findIndex(item => item.id === id);
+        arrayList.splice(index,1)
+    } else {
+        res.status(200).json({ success: "false", message: "user doesn't exist" });
+        return;
+    }
+
+
+    writeJson(arrayList);
+
+    res.status(200).json({ success: true, message: "user has been deleted" });
+})
 
 export default router;
