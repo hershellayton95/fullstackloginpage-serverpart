@@ -121,17 +121,26 @@ router.put("/user/:id", (req, res) => {
     const { id } = req.params;
     const { password, ...user } = req.body;
 
-    if (arrayList.some((item) => item.id === id)) {
-        const index = arrayList.findIndex((item) => item.id === id);
-        arrayList[index] = {
-            ...arrayList[index],
-            ...user,
-            password: hash(String(password)),
-        };
-    } else {
+    if (!arrayList.some((item) => item.id === id)) {
         res.status(200).json({ success: false, message: "user doesn't exist" });
         return;
     }
+
+    const index = arrayList.findIndex((item) => item.id === id);
+
+    if (arrayList[index].id !== user.id) {
+        res.status(200).json({
+            success: false,
+            message: "non puoi cambiare id",
+        });
+        return;
+    }
+
+    arrayList[index] = {
+        ...arrayList[index],
+        ...user,
+        password: hash(String(password)),
+    };
 
     writeJson(arrayList);
 
