@@ -5,6 +5,6 @@
         "sourceMap": true,
         "resolveJsonModule": true
     },
-    "include": ["./src/**/*.ts"],
+    "include": ["./src/**/*.ts", "src/server.cts"],
     "exclude": ["./src/**/*.test.ts"]
 }
