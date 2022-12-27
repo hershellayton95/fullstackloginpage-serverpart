@@ -1,7 +1,7 @@
 import "dotenv/config";
 import "express-async-errors";
 import express from "express";
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 let blogDB, articoliCollection : any;
 
 
@@ -41,7 +41,7 @@ app.get("/articolo", async (req, res) =>{
 });
 
 app.get("/articoli", async (req, res) =>{
-    const cursor = articoliCollection.find({ }) //ritorna un istanza
+    const cursor = articoliCollection.find({ }) //ritorna un istanzajson.push(articolo)
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const json: any[] = [];
@@ -61,9 +61,28 @@ app.get("/articoli", async (req, res) =>{
     res.send(json)
 });
 
-// app.get("/modifica-articolo", (req, res) =>{
+app.get("/modifica-articolo", async(req, res) =>{
 
-// });
+    // const update = {
+    //     $set: {
+    //         autore: "Alessandro"
+    //     }
+    // };
+
+    // const filter = { _id: new ObjectId('63ab30f67c0f360a626d708a')};
+    // const ris = await articoliCollection.updateOne(filter, update);
+    //  console.log(ris)
+
+    // articoliCollection.find({ }).forEach((articolo : any) => {
+    //     const voto = Math.random() * 5;
+    //     articoliCollection.updateOne({_id: articolo._id}, {$set: {voto: +voto.toFixed(1)}});
+    // });
+
+    // const ris = await articoliCollection.updateOne({}, {$inc: {voto: 0.5}});
+
+    res.send();
+
+});
 
 // app.get("/leggi-articolo", (req, res) =>{
 
