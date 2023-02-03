@@ -1,9 +1,17 @@
 import { Router } from "express";
+import prisma from "../middlewares/database/prisma.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-    res.send("ok");
+router.get("/", async (req, res) => {
+
+    const users = await prisma.user.findMany();
+
+    res
+        .header("Content-Type", "application/json")
+        .status(200)
+        .json(users);
+
 });
 
 
