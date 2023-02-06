@@ -12,8 +12,8 @@ CREATE TABLE "User" (
 CREATE TABLE "Profile" (
     "id" SERIAL NOT NULL,
     "firstname" TEXT,
-    "surename" TEXT,
-    "birthdaty" TIMESTAMP(3),
+    "lastname" TEXT,
+    "birthday" TIMESTAMP(3),
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")

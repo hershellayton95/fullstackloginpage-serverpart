@@ -21,8 +21,8 @@ model User {
 model Profile {
   id        Int       @id @default(autoincrement())
   firstname String?
-  surename  String?
-  birthdaty DateTime?
+  lastname  String?
+  birthday  DateTime?
   user      User      @relation(fields: [userId], references: [id])
   userId    Int       @unique
 }
